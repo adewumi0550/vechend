@@ -33,7 +33,23 @@ module.exports = {
                 return callBack(null, results[0]);
             }
         );
-    }
+    },
+
+
+       //Get the User profile 
+       getUserCourse:(matric, callBack)=>{
+        pool.query(
+            `select * from course where matric = ?`,
+            [matric],
+            (error, results, fields) => {
+                if (error) {
+                   return  callBack(error);
+                }
+                return callBack(null, results[0])
+            }
+
+        );
+    },
 
 
 

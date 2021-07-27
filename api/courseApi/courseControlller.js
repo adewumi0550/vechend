@@ -1,4 +1,4 @@
-const { createCourse, deleteCourse} = require("./courseService");
+const { createCourse, deleteCourse,getUserCourse } = require("./courseService");
 // const { sign } = require("jsonwebtoken");
 //  const { genSaltSync, hashSync, compareSync} = require("bcrypt");
 
@@ -44,7 +44,31 @@ const { createCourse, deleteCourse} = require("./courseService");
                 message:"Course Removed Successfully",
             });
          });
-     }
+     },
+
+        // Get users by Id
+        getRegisteredCourseByUserId: (req, res) => {
+
+            const matric = req.params.matric;
+            getUserCourse(matric,(err, results)=> {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+    
+                if(!results){
+                   return res.json({
+                    success:0,
+                    message: "Unable to get the record"
+                   });
+                }
+                return res.json({
+                    success:1,
+                    data:results
+                   });
+    
+            });
+         },
 
 
  }

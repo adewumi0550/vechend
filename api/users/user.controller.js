@@ -10,20 +10,53 @@ const { sign } = require("jsonwebtoken");
          const body = req.body;
          const salt = genSaltSync(10);
          body.password = hashSync(body.password, salt);
-         create(body, (err, results) => {
-             if (err) {
-                 console.log(err);
-                 return res.status(500).json({
-                     success: 0,
-                     message: "Database Connection error"
-                 });
-             }
-             return res.status(200).json({
-                 success:1,
-                 data:results
-             });
+            const matricId = body.matric;
+         getUserByMatric(matricId, (err, results)=>{
+            if(err){
+                console.log(err);
+            }
+
+            // console.log(results);
+            if (results) {
+                return res.json({
+                    success:0,
+                    data:"Matric ID Already exist"
+                });
+            }
+
+            if (!results) {
+                create(body, (err, results) => {
+                    const jsonToken = sign({ result: results}, "qwe1234", {expiresIn:"1h"});
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).json({
+                            success: 0,
+                            message: "Database Connection error"
+                        });
+                    }
+       
+                //     if (!results) {
+                //        return res.json({
+                //            success:0,
+                //            message:"Server Error"
+                //        });
+                //    }
+                    return res.status(200).json({
+                        success:1,
+                        data:results,
+                        token: jsonToken
+                    });
+                });
+            }
+
          });
+
+
+        
      },
+
+
+
 
 
      //Change Password 
@@ -63,6 +96,8 @@ const { sign } = require("jsonwebtoken");
 
         const matric = req.params.matric;
         getUserProfile(matric,(err, results)=> {
+
+            const jsonToken = sign({ result: results}, "672829", {expiresIn:"1h"});
             if (err) {
                 console.log(err);
                 return;
@@ -76,7 +111,8 @@ const { sign } = require("jsonwebtoken");
             }
             return res.json({
                 success:1,
-                data:results
+                data:results,
+                token: jsonToken
                });
 
         });
@@ -136,9 +172,10 @@ const { sign } = require("jsonwebtoken");
                 });
             }else{
                 return  res.json({
-                    success:1,
+                    success:0,
                     message:"Invalid credentials",
-                    token: jsonToken
+
+                    // token: jsonToken
                 });
             }
 

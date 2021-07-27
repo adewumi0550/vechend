@@ -9,11 +9,11 @@ const router = require("express").Router();
 
 const { checkToken } = require('../auth/token_validation');
 
-router.post("/", checkToken, createUser);
+router.post("/",  createUser);
 router.post("/login", loginUser);
-router.get("/", getUsers);
-router.get("/:matric", getUserByUserId);
-router.patch("/updateProfile", updateProfile);
-router.patch("/password", updatePassword);
+router.get("/", checkToken, getUsers);
+router.get("/:matric",checkToken, getUserByUserId);
+router.patch("/updateProfile",checkToken, updateProfile);
+router.patch("/password",checkToken, updatePassword);
 
 module.exports = router;
