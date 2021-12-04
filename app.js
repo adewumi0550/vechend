@@ -17,7 +17,13 @@ app.use(express.json());
 app.use("/api/users", userRouter);
 app.use("/api/course", courseRouter);
 
-
+app.get('/', (req, res) => {
+    console.log('Hello world received a request.');
+  
+    const target = process.env.TARGET || 'World';
+    res.send(`Hello ${target}!`);
+  });
+  
 
 
 app.listen(process.env.APP_PORT, () => {

@@ -20,7 +20,7 @@ module.exports = {
     },
 
 
-    //Login the users with matric Id and password 
+    // Login the users with matric Id and password 
     login: (data, callBack) => {
         pool.query(
             `select * from users where matric=? and password=?`,

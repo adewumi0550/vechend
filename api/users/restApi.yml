@@ -1,0 +1,20 @@
+openapi: '3.0.2'
+info:
+  title: Vech APPlication
+  version: '1.0'
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /register:
+    get:
+      responses:
+        '200':
+          description: OK
+
+  /login:
+    post:
+      responses:
+        '200':
+          description: Application Registration
+    
+     
